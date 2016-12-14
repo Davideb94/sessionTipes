@@ -41,13 +41,13 @@ dual (Select ch la pr ) (Branch ch1 (a:as)) =  if ((fst a) == la) && (eq_channel
 	                                           else dual (Select ch la pr ) (Branch ch1 as)
 dual _ _  = False
 
---Determines wheter if two Processes are matching in the given [Process]
+--Determines wheter in the given [Process] exists a dual for pr1 
 dualList :: Process -> [Process] -> Bool
 dualList pr1 [] = False
 dualList pr1 (pr:prs) = if dual pr1 pr then True
                         else dualList pr1 prs 
 
---givem a [Process] applies reduction to each couple of matching Process
+--given a [Process] applies reduction to each couple of matching Process
 pList :: [Process] -> [Process]
 pList [] = []
 pList [p] = [p]
@@ -67,8 +67,18 @@ exec (Output ch val pr ) (Input ch1 var pr1 ) = [(substitute pr1 val var), pr]
 exec (Select ch la pr ) (Branch ch1 (a:as)) = if ((fst a) == la) then [pr, (snd a)]
 	                                              	else exec (Select ch la pr ) (Branch ch1 as)
 
---INPUT PER TESTARE--
---Case IO
+{--INPUT PER TESTARE--
+
+--Case IO--
+
 --pList [Output (Ch (Plus, "a")) (Vi 3) Zero, Input (Ch (Plus, "b")) (Na "y") Zero, Input (Ch (Minus, "a")) (Na "x") (Output (Ch (Minus, "b")) (Vi 3) Zero ) ]
---Case Select Branch
---pList [Branch (Ch (Plus, "a")) [("in",Input (Ch (Plus, "b")) (Na "y") Zero)], Select (Ch (Minus, "a")) "in" Zero, Output (Ch (Minus, "b")) (Vi 3) Zero ]
+
+--Case Select Branch--
+
+--pList [Branch (Ch (Plus, "a")) [("in",Input (Ch (Plus, "b")) (Na "y") Zero)], Select (Ch (Minus, "a")) "in" Zero, Output (Ch (Minus, "b")) (Vi 3) Zero ] 
+
+--Case non riducibili--
+
+--pList [Branch (Ch (Plus, "a")) [("in",Input (Ch (Plus, "c")) (Na "y") Zero)], Select (Ch (Minus, "a")) "in" Zero, Output (Ch (Minus, "b")) (Vi 3) Zero ]
+
+-}
